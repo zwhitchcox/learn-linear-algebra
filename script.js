@@ -41,19 +41,28 @@ app.controller('SolutionCtrl', ['$scope', function($scope) {
     return numbos
   }
 }]);
+var superarr = []
 
 app.controller('FreeVariablesCtrl', ['$scope', function($scope) {
-  var i = 5,equations =  0;
-  $scope.system=[]
-  while (i > 0 && ++equations < 4) {
-    var randomSizeOfEquations = Math.random()*i|0
-    $scope.system.push(Array.apply(null, new Array(i))
-      .map(Number.prototype.valueOf,0))
-    i -= randomSizeOfEquations
-    console.log(i)
+  function getRandomNumbers(num,start,range) {
+    var numbos = []
+    for (var i = 0; i < num; i++) {
+      numbos.push(Math.random()*range + start|0)
+    }
+    return numbos
   }
-  $scope.system=[
-    [1,2,3,4],
-    [0,2,3,4]
-  ]
+  var i = 5,equations =  0;
+  $scope.system=[getRandomNumbers(7,1,5)]
+  var freeVariables = [],last=7;
+  while (i > 0 && ++equations < 4) {
+    var randomSizeOfEquation = Math.random()*i|0
+    $scope.system.push(Array.apply(null, new Array(5-randomSizeOfEquation))
+      .map(Number.prototype.valueOf,0))
+    var variables = getRandomNumbers(randomSizeOfEquation+2,1,6)
+    $scope.system[$scope.system.length-1] = $scope.system[$scope.system.length-1].concat(variables)
+    freeVariables.push([4-randomSizeOfEquation,8-last])
+    i = randomSizeOfEquation
+    last = randomSizeOfEquation+2
+  }
+  console.log(freeVariables)
 }]);
